@@ -3,7 +3,9 @@
   <mat-card-subtitle>Currently available sessions</mat-card-subtitle>
   <mat-card-content>
     <mat-list>
-      <mat-list-item *ngFor="let gameSession of gameSessions"> {{gameSession.gameName}} </mat-list-item>
+      <mat-list-item *ngFor="let gameSession of gameSessions">
+          <button mat-button routerLink="/session-lobby/{{gameSession.id}}">{{gameSession.gameName}}</button>
+         </mat-list-item>
     </mat-list>
   </mat-card-content>
 </mat-card>

@@ -5,6 +5,7 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { GameSessionListModel } from '../../models/GameSessionListModel';
 import { GameSessionService } from '../../services/game-session/game-session.service';
 import { MaterialAppModule } from '../../ngmaterial.module';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('SessionListComponent', () => {
     let component: SessionListComponent;
@@ -23,7 +24,7 @@ describe('SessionListComponent', () => {
         );
 
         TestBed.configureTestingModule({
-            imports: [MaterialAppModule],
+            imports: [MaterialAppModule, RouterTestingModule.withRoutes([])],
             providers: [
                 { provide: GameSessionService, useValue: gameSessionService }
             ],
