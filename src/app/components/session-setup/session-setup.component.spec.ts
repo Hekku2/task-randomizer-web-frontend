@@ -6,6 +6,7 @@ import { GameSessionService } from '../../services/game-session/game-session.ser
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
+import { MaterialAppModule } from '../../ngmaterial.module';
 
 describe('SessionSetupComponent', () => {
     let component: SessionSetupComponent;
@@ -25,7 +26,7 @@ describe('SessionSetupComponent', () => {
         );
 
         TestBed.configureTestingModule({
-            imports: [FormsModule, RouterTestingModule.withRoutes([])],
+            imports: [FormsModule, RouterTestingModule.withRoutes([]), MaterialAppModule],
             providers: [
                 { provide: GameSessionService, useValue: gameSessionService }
             ],

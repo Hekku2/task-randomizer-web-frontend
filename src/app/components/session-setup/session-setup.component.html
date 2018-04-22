@@ -1,6 +1,18 @@
 <form (submit)="startSession()">
-  <label>Game</label>
-  <input [(ngModel)]="game" name="game">
-
-  <button type="submit">Start</button>
+  <mat-card>
+    <mat-card-title>
+      New session
+    </mat-card-title>
+    <mat-card-subtitle>
+      This creates new session from selected game
+    </mat-card-subtitle>
+    <mat-card-content>
+      <mat-form-field>
+        <input matInput [(ngModel)]="game" name="game" placeholder="Game">
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button color="primary" type="submit">Start</button>
+    </mat-card-actions>
+  </mat-card>
 </form>

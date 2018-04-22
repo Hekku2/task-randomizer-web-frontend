@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
+import { MaterialAppModule } from './ngmaterial.module';
 import { AppComponent } from './app.component';
 import { SessionListComponent } from './components/session-list/session-list.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
@@ -19,7 +20,13 @@ import { SessionLobbyComponent } from './components/session-lobby/session-lobby.
         HomeComponent,
         SessionLobbyComponent
     ],
-    imports: [BrowserModule, HttpClientModule, AppRoutingModule, FormsModule],
+    imports: [
+        BrowserModule,
+        HttpClientModule,
+        AppRoutingModule,
+        FormsModule,
+        MaterialAppModule
+    ],
     providers: [GameSessionService],
     bootstrap: [AppComponent]
 })
