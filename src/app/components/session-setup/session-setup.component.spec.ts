@@ -26,7 +26,11 @@ describe('SessionSetupComponent', () => {
         );
 
         TestBed.configureTestingModule({
-            imports: [FormsModule, RouterTestingModule.withRoutes([]), MaterialAppModule],
+            imports: [
+                FormsModule,
+                RouterTestingModule.withRoutes([]),
+                MaterialAppModule
+            ],
             providers: [
                 { provide: GameSessionService, useValue: gameSessionService }
             ],
@@ -57,7 +61,7 @@ describe('SessionSetupComponent', () => {
         });
 
         it('should route user to correct session lobby', () => {
-            var spy = spyOn(route, 'navigate');
+            const spy = spyOn(route, 'navigate');
 
             const gameId = 666;
             component.game = gameId;

@@ -63,11 +63,11 @@ describe('SessionService', () => {
         it('should start session', done => {
             service.startSession(666).subscribe(result => {
                 expect(result).toBeTruthy();
-                expect(result).toBe("sessionId");
+                expect(result).toBe('sessionId');
                 done();
             });
 
-            response.next("sessionId");
+            response.next('sessionId');
         });
 
         it('should return error when start fails', done => {
