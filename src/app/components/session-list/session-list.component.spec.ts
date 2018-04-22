@@ -1,9 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SessionListComponent } from './session-list.component';
-import { GameSessionService } from '../../services/game-session.service';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { GameSessionListModel } from '../../models/GameSessionListModel';
+import { GameSessionService } from '../../services/game-session/game-session.service';
 
 describe('SessionListComponent', () => {
     let component: SessionListComponent;

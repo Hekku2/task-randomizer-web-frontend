@@ -12,7 +12,14 @@ export class GameSessionService {
 
     getAllGameSessions(): Observable<TaskRandomizerApi.GameSessionModel[]> {
         return this.http.get<TaskRandomizerApi.GameSessionModel[]>(
-            'http://localhost:5000/api/v1/gameSession'
+            'http://localhost:5000/api/v1/gamesession'
         );
+    }
+
+    startSession(gameId): Observable<string> {
+        const body = {
+            GameId: gameId
+        };
+        return this.http.post<string>('http://localhost:5000/api/v1/gamesession/start', body);
     }
 }

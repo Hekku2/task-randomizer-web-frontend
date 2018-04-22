@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { GameSessionService } from '../../services/game-session.service';
 import { GameSessionListModel } from '../../models/GameSessionListModel';
+import { GameSessionService } from '../../services/game-session/game-session.service';
 
 @Component({
     selector: 'app-session-list',
