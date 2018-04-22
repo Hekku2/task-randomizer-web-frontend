@@ -31,7 +31,7 @@ describe('SessionService', () => {
     });
 
     describe('getAllGameSessions', () => {
-        it('should return all games', done => {
+        it('should return all game sessions', done => {
             service.getAllGameSessions().subscribe(result => {
                 expect(result).toBeTruthy();
                 expect(result.length).toBe(3);
