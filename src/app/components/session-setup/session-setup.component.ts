@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { GameSessionService } from '../../services/game-session/game-session.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { GameService } from '../../services/game/game.service';
 
 @Component({
     selector: 'app-session-setup',
@@ -8,19 +9,26 @@ import { ActivatedRoute, Router } from '@angular/router';
     styleUrls: ['./session-setup.component.css']
 })
 export class SessionSetupComponent implements OnInit {
-    @Input() game: number;
+    games: any[];
+    selectedGame: number;
 
     constructor(
         private gameSessionService: GameSessionService,
+        private gameService: GameService,
         private route: Router
     ) {}
 
     ngOnInit() {
-        this.game = 123;
+        this.gameService.getAll().subscribe(result => {
+            this.games = result;
+        }, error => {
+            // TODO Issue #8 Unified error handling
+            throw error;
+        });
     }
 
     public startSession(): void {
-        this.gameSessionService.startSession(this.game).subscribe(result => {
+        this.gameSessionService.startSession(this.selectedGame).subscribe(result => {
             this.route.navigate(['session-lobby', result]);
         });
     }

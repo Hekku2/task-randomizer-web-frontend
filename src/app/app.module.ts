@@ -11,6 +11,7 @@ import { SessionSetupComponent } from './components/session-setup/session-setup.
 import { GameSessionService } from './services/game-session/game-session.service';
 import { HomeComponent } from './components/home/home.component';
 import { SessionLobbyComponent } from './components/session-lobby/session-lobby.component';
+import { GameService } from './services/game/game.service';
 
 @NgModule({
     declarations: [
@@ -27,7 +28,7 @@ import { SessionLobbyComponent } from './components/session-lobby/session-lobby.
         FormsModule,
         MaterialAppModule
     ],
-    providers: [GameSessionService],
+    providers: [GameSessionService, GameService],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

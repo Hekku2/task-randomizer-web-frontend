@@ -7,6 +7,7 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
 import { MaterialAppModule } from '../../ngmaterial.module';
+import { GameService } from '../../services/game/game.service';
 
 describe('SessionSetupComponent', () => {
     let component: SessionSetupComponent;
@@ -15,6 +16,8 @@ describe('SessionSetupComponent', () => {
     let route;
     let gameSessionService;
     let gameSessionStartResponse: ReplaySubject<string>;
+    let gameService;
+    let getAllResponse: ReplaySubject<TaskRandomizerApi.GameModel[]>;
 
     beforeEach(async(() => {
         gameSessionService = jasmine.createSpyObj('GameSessionService', [
@@ -25,6 +28,10 @@ describe('SessionSetupComponent', () => {
             gameSessionStartResponse
         );
 
+        gameService = jasmine.createSpyObj('GameService', ['getAll']);
+        getAllResponse = new ReplaySubject<TaskRandomizerApi.GameModel[]>(1);
+        gameService.getAll.and.returnValue(getAllResponse);
+
         TestBed.configureTestingModule({
             imports: [
                 FormsModule,
@@ -32,7 +39,8 @@ describe('SessionSetupComponent', () => {
                 MaterialAppModule
             ],
             providers: [
-                { provide: GameSessionService, useValue: gameSessionService }
+                { provide: GameSessionService, useValue: gameSessionService },
+                { provide: GameService, useValue: gameService }
             ],
             declarations: [SessionSetupComponent]
         }).compileComponents();
@@ -50,10 +58,23 @@ describe('SessionSetupComponent', () => {
         expect(component).toBeTruthy();
     });
 
+    it('should get available games on init', () => {
+        const expectedGames = <TaskRandomizerApi.GameModel[]>[
+            { id: 1, name: 'testname1' },
+            { id: 2, name: 'testname2' }
+        ];
+
+        expect(gameService.getAll).toHaveBeenCalled();
+
+        getAllResponse.next(expectedGames);
+
+        expect(component.games).toEqual(expectedGames);
+    });
+
     describe('startSession', () => {
         it('should call correct service', () => {
             const gameId = 666;
-            component.game = gameId;
+            component.selectedGame = gameId;
             component.startSession();
             expect(gameSessionService.startSession).toHaveBeenCalledWith(
                 gameId
@@ -64,7 +85,7 @@ describe('SessionSetupComponent', () => {
             const spy = spyOn(route, 'navigate');
 
             const gameId = 666;
-            component.game = gameId;
+            component.selectedGame = gameId;
             component.startSession();
             gameSessionStartResponse.next('newSessionId');
 

@@ -8,7 +8,8 @@ import {
     MatFormFieldModule,
     MatListModule,
     MatDividerModule,
-    MatCardModule
+    MatCardModule,
+    MatSelectModule
 } from '@angular/material';
 
 @NgModule({
@@ -20,7 +21,8 @@ import {
         MatFormFieldModule,
         MatListModule,
         MatDividerModule,
-        MatCardModule
+        MatCardModule,
+        MatSelectModule
     ],
     exports: [
         MatToolbarModule,
@@ -29,7 +31,8 @@ import {
         MatFormFieldModule,
         MatListModule,
         MatDividerModule,
-        MatCardModule
+        MatCardModule,
+        MatSelectModule
     ]
 })
 export class MaterialAppModule {}
