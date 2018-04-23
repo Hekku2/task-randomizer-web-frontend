@@ -15,6 +15,9 @@ export class SessionListComponent implements OnInit {
     ngOnInit() {
         this.gameSessionService.getAllGameSessions().subscribe(result => {
             this.handleGameSessionListResponse(result);
+        }, error => {
+            // TODO Issue #8 Unified error handling
+            throw error;
         });
     }
 

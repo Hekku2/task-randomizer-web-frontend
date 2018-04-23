@@ -31,6 +31,13 @@ describe('SessionService', () => {
     });
 
     describe('getAllGameSessions', () => {
+        it('should call correct url', () => {
+            service.getAllGameSessions();
+            expect(httpClient.get).toHaveBeenCalledWith(
+                'http://localhost:5000/api/v1/gamesession'
+            );
+        });
+
         it('should return all game sessions', done => {
             service.getAllGameSessions().subscribe(result => {
                 expect(result).toBeTruthy();
@@ -59,7 +66,45 @@ describe('SessionService', () => {
         });
     });
 
+    describe('getSingle', () => {
+        it('should call correct url', () => {
+            service.getSingle('mockSession');
+            expect(httpClient.get).toHaveBeenCalledWith(
+                'http://localhost:5000/api/v1/gamesession/mockSession'
+            );
+        });
+
+        it('should return one', done => {
+            const expected = <TaskRandomizerApi.GameSessionModel>{};
+            service.getSingle('test').subscribe(result => {
+                expect(result).toBe(expected);
+                done();
+            });
+
+            response.next(expected);
+        });
+
+        it('should return error when get fails', done => {
+            service.getSingle('test').subscribe(
+                result => {
+                    fail('this should not happen');
+                },
+                error => {
+                    done();
+                }
+            );
+            response.error('failure');
+        });
+    });
+
     describe('startSession', () => {
+        it('should call correct url', () => {
+            service.startSession(123);
+            expect(httpClient.post).toHaveBeenCalledWith('http://localhost:5000/api/v1/gamesession/start', {
+                GameId: 123
+            });
+        });
+
         it('should start session', done => {
             service.startSession(666).subscribe(result => {
                 expect(result).toBeTruthy();

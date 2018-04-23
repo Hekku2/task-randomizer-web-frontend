@@ -16,6 +16,12 @@ export class GameSessionService {
         );
     }
 
+    getSingle(sessionId: string): Observable<TaskRandomizerApi.GameSessionModel> {
+        return this.http.get<TaskRandomizerApi.GameSessionModel>(
+            'http://localhost:5000/api/v1/gamesession/' + sessionId
+        );
+    }
+
     startSession(gameId): Observable<string> {
         const body = {
             GameId: gameId
