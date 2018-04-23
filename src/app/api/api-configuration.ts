@@ -6,5 +6,5 @@ import { Injectable } from '@angular/core';
  */
 @Injectable()
 export class ApiConfiguration {
-  rootUrl: string = 'http://localhost:5000';
+  rootUrl: string = 'http://localhost/INVALID';
 }

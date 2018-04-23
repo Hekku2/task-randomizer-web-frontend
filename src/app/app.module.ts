@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER, Provider } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { MaterialAppModule } from './ngmaterial.module';
@@ -13,6 +13,19 @@ import { SessionLobbyComponent } from './components/session-lobby/session-lobby.
 import { GameSessionService, GameService } from './api/services';
 import { ApiConfiguration } from './api/api-configuration';
 import { ApiModule } from './api/api.module';
+import { environment } from '../environments/environment';
+
+export function initApiConfiguration(config: ApiConfiguration): Function {
+    return () => {
+      config.rootUrl = environment.apiUrl;
+    };
+  }
+  export const INIT_API_CONFIGURATION: Provider = {
+    provide: APP_INITIALIZER,
+    useFactory: initApiConfiguration,
+    deps: [ApiConfiguration],
+    multi: true
+  };
 
 @NgModule({
     declarations: [
@@ -30,7 +43,7 @@ import { ApiModule } from './api/api.module';
         MaterialAppModule,
         ApiModule
     ],
-    providers: [GameSessionService, GameService],
+    providers: [INIT_API_CONFIGURATION, GameSessionService, GameService],
     bootstrap: [AppComponent]
 })
 export class AppModule {}
