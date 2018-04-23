@@ -3,9 +3,10 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SessionLobbyComponent } from './session-lobby.component';
 import { MaterialAppModule } from '../../ngmaterial.module';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
-import { GameSessionService } from '../../services/game-session/game-session.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute } from '@angular/router';
+import { GameSessionService } from '../../api/services';
+import { GameSessionModel } from '../../api/models/game-session-model';
 
 describe('SessionLobbyComponent', () => {
     let component: SessionLobbyComponent;
@@ -22,10 +23,10 @@ describe('SessionLobbyComponent', () => {
         };
 
         gameSessionService = jasmine.createSpyObj('GameSessionService', [
-            'getSingle'
+            'ApiV1GameSessionByIdGet'
         ]);
         gameSessionResponse = new ReplaySubject<any>(1);
-        gameSessionService.getSingle.and.returnValue(gameSessionResponse);
+        gameSessionService.ApiV1GameSessionByIdGet.and.returnValue(gameSessionResponse);
 
         TestBed.configureTestingModule({
             imports: [MaterialAppModule],
@@ -48,7 +49,7 @@ describe('SessionLobbyComponent', () => {
     });
 
     it('should fetch session data when route is ready', () => {
-        const expectedSession = <TaskRandomizerApi.GameSessionModel>{
+        const expectedSession = <GameSessionModel>{
             id: 'mocksession',
             gameName: 'test game'
         };
@@ -58,7 +59,7 @@ describe('SessionLobbyComponent', () => {
         });
         gameSessionResponse.next(expectedSession);
 
-        expect(gameSessionService.getSingle).toHaveBeenCalledWith(
+        expect(gameSessionService.ApiV1GameSessionByIdGet).toHaveBeenCalledWith(
             expectedSession.id
         );
         expect(component.session).toBe(expectedSession);

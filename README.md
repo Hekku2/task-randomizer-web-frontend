@@ -6,3 +6,6 @@ Frontend implementation of Task Randomizer
 
 ## Testing
 `ng test`
+
+## Generating new swagger documentation
+`node_modules/.bin/ng-swagger-gen --config ng-swagger-gen.json`

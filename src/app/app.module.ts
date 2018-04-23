@@ -8,10 +8,11 @@ import { SessionListComponent } from './components/session-list/session-list.com
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './/app-routing.module';
 import { SessionSetupComponent } from './components/session-setup/session-setup.component';
-import { GameSessionService } from './services/game-session/game-session.service';
 import { HomeComponent } from './components/home/home.component';
 import { SessionLobbyComponent } from './components/session-lobby/session-lobby.component';
-import { GameService } from './services/game/game.service';
+import { GameSessionService, GameService } from './api/services';
+import { ApiConfiguration } from './api/api-configuration';
+import { ApiModule } from './api/api.module';
 
 @NgModule({
     declarations: [
@@ -26,7 +27,8 @@ import { GameService } from './services/game/game.service';
         HttpClientModule,
         AppRoutingModule,
         FormsModule,
-        MaterialAppModule
+        MaterialAppModule,
+        ApiModule
     ],
     providers: [GameSessionService, GameService],
     bootstrap: [AppComponent]

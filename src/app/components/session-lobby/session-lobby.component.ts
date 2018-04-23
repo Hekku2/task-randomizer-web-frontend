@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { GameSessionService } from '../../services/game-session/game-session.service';
 import { ActivatedRoute } from '@angular/router';
+import { GameSessionService } from '../../api/services';
 
 @Component({
     selector: 'app-session-lobby',
@@ -19,7 +19,7 @@ export class SessionLobbyComponent implements OnInit {
         this.route.params.subscribe(
             params => {
                 const sessionId = params['sessionId'];
-                this.gameSessionService.getSingle(sessionId).subscribe(
+                this.gameSessionService.ApiV1GameSessionByIdGet(sessionId).subscribe(
                     session => {
                         this.session = session;
                     },

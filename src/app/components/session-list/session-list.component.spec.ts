@@ -3,9 +3,10 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SessionListComponent } from './session-list.component';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { GameSessionListModel } from '../../models/GameSessionListModel';
-import { GameSessionService } from '../../services/game-session/game-session.service';
 import { MaterialAppModule } from '../../ngmaterial.module';
 import { RouterTestingModule } from '@angular/router/testing';
+import { GameSessionModel } from '../../api/models';
+import { GameSessionService } from '../../api/services';
 
 describe('SessionListComponent', () => {
     let component: SessionListComponent;
@@ -16,10 +17,10 @@ describe('SessionListComponent', () => {
 
     beforeEach(async(() => {
         gameSessionService = jasmine.createSpyObj('GameSessionService', [
-            'getAllGameSessions'
+            'ApiV1GameSessionGet'
         ]);
         gameSessionsResponse = new ReplaySubject<any>(1);
-        gameSessionService.getAllGameSessions.and.returnValue(
+        gameSessionService.ApiV1GameSessionGet.and.returnValue(
             gameSessionsResponse
         );
 
@@ -43,20 +44,20 @@ describe('SessionListComponent', () => {
     });
 
     it('should request game sessions on init', () => {
-        expect(gameSessionService.getAllGameSessions).toHaveBeenCalled();
+        expect(gameSessionService.ApiV1GameSessionGet).toHaveBeenCalled();
     });
 
     it('should contain game sessions', () => {
         const sessions = [
-            <TaskRandomizerApi.GameSessionModel>{
+            <GameSessionModel>{
                 id: '1',
                 gameName: 'session 1'
             },
-            <TaskRandomizerApi.GameSessionModel>{
+            <GameSessionModel>{
                 id: '2',
                 gameName: 'session 2'
             },
-            <TaskRandomizerApi.GameSessionModel>{
+            <GameSessionModel>{
                 id: '3',
                 gameName: 'session 3'
             }

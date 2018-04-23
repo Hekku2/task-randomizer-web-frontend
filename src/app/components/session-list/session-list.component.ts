@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GameSessionListModel } from '../../models/GameSessionListModel';
-import { GameSessionService } from '../../services/game-session/game-session.service';
+import { GameSessionModel } from '../../api/models';
+import { GameSessionService } from '../../api/services';
 
 @Component({
     selector: 'app-session-list',
@@ -13,7 +14,7 @@ export class SessionListComponent implements OnInit {
     constructor(private gameSessionService: GameSessionService) {}
 
     ngOnInit() {
-        this.gameSessionService.getAllGameSessions().subscribe(result => {
+        this.gameSessionService.ApiV1GameSessionGet().subscribe(result => {
             this.handleGameSessionListResponse(result);
         }, error => {
             // TODO Issue #8 Unified error handling
@@ -22,7 +23,7 @@ export class SessionListComponent implements OnInit {
     }
 
     private handleGameSessionListResponse(
-        response: TaskRandomizerApi.GameSessionModel[]
+        response: GameSessionModel[]
     ): void {
         this.gameSessions = response.map(
             item =>

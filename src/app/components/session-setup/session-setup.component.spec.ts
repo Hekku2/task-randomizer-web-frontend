@@ -2,12 +2,12 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SessionSetupComponent } from './session-setup.component';
 import { FormsModule } from '@angular/forms';
-import { GameSessionService } from '../../services/game-session/game-session.service';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
 import { MaterialAppModule } from '../../ngmaterial.module';
-import { GameService } from '../../services/game/game.service';
+import { GameModel } from '../../api/models';
+import { GameSessionService, GameService } from '../../api/services';
 
 describe('SessionSetupComponent', () => {
     let component: SessionSetupComponent;
@@ -17,20 +17,20 @@ describe('SessionSetupComponent', () => {
     let gameSessionService;
     let gameSessionStartResponse: ReplaySubject<string>;
     let gameService;
-    let getAllResponse: ReplaySubject<TaskRandomizerApi.GameModel[]>;
+    let getAllResponse: ReplaySubject<GameModel[]>;
 
     beforeEach(async(() => {
         gameSessionService = jasmine.createSpyObj('GameSessionService', [
-            'startSession'
+            'ApiV1GameSessionStartPost'
         ]);
         gameSessionStartResponse = new ReplaySubject<string>(1);
-        gameSessionService.startSession.and.returnValue(
+        gameSessionService.ApiV1GameSessionStartPost.and.returnValue(
             gameSessionStartResponse
         );
 
-        gameService = jasmine.createSpyObj('GameService', ['getAll']);
-        getAllResponse = new ReplaySubject<TaskRandomizerApi.GameModel[]>(1);
-        gameService.getAll.and.returnValue(getAllResponse);
+        gameService = jasmine.createSpyObj('GameService', ['ApiV1GameGet']);
+        getAllResponse = new ReplaySubject<GameModel[]>(1);
+        gameService.ApiV1GameGet.and.returnValue(getAllResponse);
 
         TestBed.configureTestingModule({
             imports: [
@@ -59,12 +59,12 @@ describe('SessionSetupComponent', () => {
     });
 
     it('should get available games on init', () => {
-        const expectedGames = <TaskRandomizerApi.GameModel[]>[
+        const expectedGames = <GameModel[]>[
             { id: 1, name: 'testname1' },
             { id: 2, name: 'testname2' }
         ];
 
-        expect(gameService.getAll).toHaveBeenCalled();
+        expect(gameService.ApiV1GameGet).toHaveBeenCalled();
 
         getAllResponse.next(expectedGames);
 
@@ -76,8 +76,8 @@ describe('SessionSetupComponent', () => {
             const gameId = 666;
             component.selectedGame = gameId;
             component.startSession();
-            expect(gameSessionService.startSession).toHaveBeenCalledWith(
-                gameId
+            expect(gameSessionService.ApiV1GameSessionStartPost).toHaveBeenCalledWith(
+                {gameId: gameId}
             );
         });
 
@@ -88,6 +88,17 @@ describe('SessionSetupComponent', () => {
             component.selectedGame = gameId;
             component.startSession();
             gameSessionStartResponse.next('newSessionId');
+
+            expect(spy).toHaveBeenCalledWith(['session-lobby', 'newSessionId']);
+        });
+
+        it('should remove quotation marks from session id', () => {
+            const spy = spyOn(route, 'navigate');
+
+            const gameId = 666;
+            component.selectedGame = gameId;
+            component.startSession();
+            gameSessionStartResponse.next('\"newSessionId\"');
 
             expect(spy).toHaveBeenCalledWith(['session-lobby', 'newSessionId']);
         });
