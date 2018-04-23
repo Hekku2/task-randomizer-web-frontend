@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GameSessionService } from '../../api/services';
+import { GameSessionModel } from '../../api/models';
 
 @Component({
     selector: 'app-session-lobby',
@@ -8,7 +9,7 @@ import { GameSessionService } from '../../api/services';
     styleUrls: ['./session-lobby.component.css']
 })
 export class SessionLobbyComponent implements OnInit {
-    session: {};
+    session = <GameSessionModel>{};
 
     constructor(
         private gameSessionService: GameSessionService,
@@ -28,8 +29,6 @@ export class SessionLobbyComponent implements OnInit {
                         throw error;
                     }
                 );
-
-                // TODO handle id
             },
             error => {
                 // TODO Issue #8 Unified error handling
