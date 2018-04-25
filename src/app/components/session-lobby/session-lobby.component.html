@@ -1,3 +1,18 @@
 <mat-card *ngIf="session">
   <mat-card-title>Session {{session.gameName}}</mat-card-title>
+  <mat-card-content>
+    Players
+    <mat-list>
+      <mat-list-item *ngIf="!session.players || session.players.length == 0">No players</mat-list-item>
+      <mat-list-item *ngFor="let player of session.players">
+        {{player}}
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+  <mat-card-actions>
+    <mat-form-field>
+      <input matInput placeholder="Your name" value="Unnamed Player">
+    </mat-form-field>
+    <button mat-button (click)="joinSession()">Join as new player</button>
+  </mat-card-actions>
 </mat-card>

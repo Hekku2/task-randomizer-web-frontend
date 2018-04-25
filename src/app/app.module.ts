@@ -14,6 +14,7 @@ import { GameSessionService, GameService } from './api/services';
 import { ApiConfiguration } from './api/api-configuration';
 import { ApiModule } from './api/api.module';
 import { environment } from '../environments/environment';
+import { SessionLiveComponent } from './components/session-live/session-live.component';
 
 export function initApiConfiguration(config: ApiConfiguration): Function {
     return () => {
@@ -33,7 +34,8 @@ export function initApiConfiguration(config: ApiConfiguration): Function {
         SessionListComponent,
         SessionSetupComponent,
         HomeComponent,
-        SessionLobbyComponent
+        SessionLobbyComponent,
+        SessionLiveComponent
     ],
     imports: [
         BrowserModule,

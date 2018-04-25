@@ -11,7 +11,9 @@ import { filter } from 'rxjs/operators/filter';
 
 import { GameSessionModel } from '../models/game-session-model';
 import { SessionSettingsModel } from '../models/session-settings-model';
+import { SessionJoinModel } from '../models/session-join-model';
 import { ErrandModel } from '../models/errand-model';
+import { SessionContextModel } from '../models/session-context-model';
 @Injectable()
 class GameSessionService extends BaseService {
   constructor(
@@ -139,18 +141,13 @@ class GameSessionService extends BaseService {
   }
 
   /**
-   * @param params The `GameSessionService.ApiV1GameSessionJoinPostParams` containing the following parameters:
-   *
-   * - `SessionId`:
-   *
-   * - `PlayerName`:
+   * @param joinParameters undefined
    */
-  ApiV1GameSessionJoinPostResponse(params: GameSessionService.ApiV1GameSessionJoinPostParams): Observable<HttpResponse<void>> {
+  ApiV1GameSessionJoinPostResponse(joinParameters?: SessionJoinModel): Observable<HttpResponse<void>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    if (params.SessionId != null) __params = __params.set('SessionId', params.SessionId.toString());
-    if (params.PlayerName != null) __params = __params.set('PlayerName', params.PlayerName.toString());
+    __body = joinParameters;
     let req = new HttpRequest<any>(
       'POST',
       this.rootUrl + `/api/v1/GameSession/join`,
@@ -173,27 +170,23 @@ class GameSessionService extends BaseService {
   }
 
   /**
-   * @param params The `GameSessionService.ApiV1GameSessionJoinPostParams` containing the following parameters:
-   *
-   * - `SessionId`:
-   *
-   * - `PlayerName`:
+   * @param joinParameters undefined
    */
-  ApiV1GameSessionJoinPost(params: GameSessionService.ApiV1GameSessionJoinPostParams): Observable<void> {
-    return this.ApiV1GameSessionJoinPostResponse(params).pipe(
+  ApiV1GameSessionJoinPost(joinParameters?: SessionJoinModel): Observable<void> {
+    return this.ApiV1GameSessionJoinPostResponse(joinParameters).pipe(
       map(_r => _r.body)
     );
   }
 
   /**
-   * @param SessionId undefined
+   * @param parameters session parameters
    * @return Success
    */
-  ApiV1GameSessionPopErrandPostResponse(SessionId?: string): Observable<HttpResponse<ErrandModel>> {
+  ApiV1GameSessionPopErrandPostResponse(parameters?: SessionContextModel): Observable<HttpResponse<ErrandModel>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    if (SessionId != null) __params = __params.set('SessionId', SessionId.toString());
+    __body = parameters;
     let req = new HttpRequest<any>(
       'POST',
       this.rootUrl + `/api/v1/GameSession/popErrand`,
@@ -216,25 +209,17 @@ class GameSessionService extends BaseService {
   }
 
   /**
-   * @param SessionId undefined
+   * @param parameters session parameters
    * @return Success
    */
-  ApiV1GameSessionPopErrandPost(SessionId?: string): Observable<ErrandModel> {
-    return this.ApiV1GameSessionPopErrandPostResponse(SessionId).pipe(
+  ApiV1GameSessionPopErrandPost(parameters?: SessionContextModel): Observable<ErrandModel> {
+    return this.ApiV1GameSessionPopErrandPostResponse(parameters).pipe(
       map(_r => _r.body)
     );
   }
 }
 
 module GameSessionService {
-
-  /**
-   * Parameters for ApiV1GameSessionJoinPost
-   */
-  export interface ApiV1GameSessionJoinPostParams {
-    SessionId?: string;
-    PlayerName?: string;
-  }
 }
 
 export { GameSessionService }

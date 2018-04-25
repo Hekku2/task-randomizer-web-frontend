@@ -1,0 +1,13 @@
+<mat-card>
+  <mat-card-title>Session events </mat-card-title>
+  <mat-card-content>
+      <mat-list>
+        <mat-list-item *ngFor="let e of events">
+          {{e.name}}
+        </mat-list-item>
+      </mat-list>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button>Pop errand</button>
+  </mat-card-actions>
+</mat-card>
