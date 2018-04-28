@@ -22,15 +22,19 @@ export class SessionLiveComponent implements OnInit {
         this.route.params.subscribe(
             params => {
                 this.sessionId = <string>(params['sessionId']);
-                this.eventService.ApiV1EventBySessionIdGet(this.sessionId).subscribe(
-                    events => {
-                        this.events = events;
-                    },
-                    error => {
-                        // TODO Issue #8 Unified error handling
-                        throw error;
-                    }
-                );
+                this.updateEvents();
+            },
+            error => {
+                // TODO Issue #8 Unified error handling
+                throw error;
+            }
+        );
+    }
+
+    private updateEvents() {
+        this.eventService.ApiV1EventBySessionIdGet(this.sessionId).subscribe(
+            events => {
+                this.events = events;
             },
             error => {
                 // TODO Issue #8 Unified error handling
@@ -41,10 +45,13 @@ export class SessionLiveComponent implements OnInit {
 
     public popErrand() {
         // TODO This should only be called after route is ready (issue #14)
-        // TODO Event shoul be handled int by isseu #12
+        // TODO Event shoul be handled int by issue #12
         this.gameSessionService.ApiV1GameSessionPopErrandPost(<SessionContextModel>{
             sessionId: this.sessionId
-        }).subscribe(() => {}, error => {
+        }).subscribe(() => {
+            // TODO THis is a tempoary solution until signalR implemenation is done (issue #12)
+            this.updateEvents();
+        }, error => {
             // TODO Issue #8 Unified error handling
             throw error;
         });
