@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { GameSessionModel } from '../../api/models';
-import { EventService } from '../../api/services';
+import { GameSessionModel, SessionContextModel } from '../../api/models';
+import { EventService, GameSessionService } from '../../api/services';
 import { ActivatedRoute } from '@angular/router';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 @Component({
     selector: 'app-session-live',
@@ -9,17 +10,19 @@ import { ActivatedRoute } from '@angular/router';
     styleUrls: ['./session-live.component.css']
 })
 export class SessionLiveComponent implements OnInit {
+    private sessionId: string;
     events = <any>[];
 
     constructor(
         private eventService: EventService,
+        private gameSessionService: GameSessionService,
         private route: ActivatedRoute) {}
 
     ngOnInit() {
         this.route.params.subscribe(
             params => {
-                const sessionId = params['sessionId'];
-                this.eventService.ApiV1EventBySessionIdGet(sessionId).subscribe(
+                this.sessionId = <string>(params['sessionId']);
+                this.eventService.ApiV1EventBySessionIdGet(this.sessionId).subscribe(
                     events => {
                         this.events = events;
                     },
@@ -34,5 +37,16 @@ export class SessionLiveComponent implements OnInit {
                 throw error;
             }
         );
+    }
+
+    public popErrand() {
+        // TODO This should only be called after route is ready (issue #14)
+        // TODO Event shoul be handled int by isseu #12
+        this.gameSessionService.ApiV1GameSessionPopErrandPost(<SessionContextModel>{
+            sessionId: this.sessionId
+        }).subscribe(() => {}, error => {
+            // TODO Issue #8 Unified error handling
+            throw error;
+        });
     }
 }

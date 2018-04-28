@@ -11,6 +11,7 @@ import { GameSessionModel, SessionJoinModel } from '../../api/models';
 export class SessionLobbyComponent implements OnInit {
     session = <GameSessionModel>{};
 
+    // TODO #9 Bind this to actual element in page
     @Input() playerName = 'Default name';
 
     constructor(
@@ -43,6 +44,7 @@ export class SessionLobbyComponent implements OnInit {
     }
 
     public joinSession() {
+        // TODO This should only be called after route is ready issue #14
         this.gameSessionService
             .ApiV1GameSessionJoinPost(<SessionJoinModel>{
                 sessionId: this.session.id,
