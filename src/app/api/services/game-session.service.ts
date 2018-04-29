@@ -182,7 +182,7 @@ class GameSessionService extends BaseService {
    * @param parameters session parameters
    * @return Success
    */
-  ApiV1GameSessionPopErrandPostResponse(parameters?: SessionContextModel): Observable<HttpResponse<ErrandModel>> {
+  ApiV1GameSessionPopErrandPostResponse(parameters?: SessionContextModel): Observable<HttpResponse<Array<ErrandModel>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -201,9 +201,9 @@ class GameSessionService extends BaseService {
       filter(_r => _r instanceof HttpResponse),
       map(_r => {
         let _resp = _r as HttpResponse<any>;
-        let _body: ErrandModel = null;
-        _body = _resp.body as ErrandModel;
-        return _resp.clone({body: _body}) as HttpResponse<ErrandModel>;
+        let _body: Array<ErrandModel> = null;
+        _body = _resp.body as Array<ErrandModel>;
+        return _resp.clone({body: _body}) as HttpResponse<Array<ErrandModel>>;
       })
     );
   }
@@ -212,7 +212,7 @@ class GameSessionService extends BaseService {
    * @param parameters session parameters
    * @return Success
    */
-  ApiV1GameSessionPopErrandPost(parameters?: SessionContextModel): Observable<ErrandModel> {
+  ApiV1GameSessionPopErrandPost(parameters?: SessionContextModel): Observable<Array<ErrandModel>> {
     return this.ApiV1GameSessionPopErrandPostResponse(parameters).pipe(
       map(_r => _r.body)
     );
