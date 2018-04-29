@@ -5,7 +5,7 @@ import { MaterialAppModule } from '../../ngmaterial.module';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { ActivatedRoute } from '@angular/router';
 import { EventService, GameSessionService } from '../../api/services';
-import { SessionContextModel } from '../../api/models';
+import { SessionContextModel, SessionEventModel } from '../../api/models';
 
 describe('SessionLiveComponent', () => {
     let component: SessionLiveComponent;
@@ -39,7 +39,10 @@ describe('SessionLiveComponent', () => {
             providers: [
                 { provide: ActivatedRoute, useFactory: () => route },
                 { provide: EventService, useFactory: () => gameEventService },
-                { provide: GameSessionService, useFactory: () => gameSessionService }
+                {
+                    provide: GameSessionService,
+                    useFactory: () => gameSessionService
+                }
             ],
             declarations: [SessionLiveComponent]
         }).compileComponents();
@@ -58,7 +61,10 @@ describe('SessionLiveComponent', () => {
     it('should get events when loaded', () => {
         const expectedSession = 'test';
 
-        const events = [{ eventType: 1 }, { eventType: 2 }];
+        const events = <SessionEventModel[]>[
+            { eventType: 'Test1' },
+            { eventType: 'Test2' }
+        ];
 
         route.params.next({
             sessionId: expectedSession
@@ -81,11 +87,15 @@ describe('SessionLiveComponent', () => {
             });
             gameEventsResponse.next(events);
 
-            gameSessionService.ApiV1GameSessionPopErrandPost.and.returnValue(new ReplaySubject<any>(1));
+            gameSessionService.ApiV1GameSessionPopErrandPost.and.returnValue(
+                new ReplaySubject<any>(1)
+            );
 
             component.popErrand();
 
-            expect(gameSessionService.ApiV1GameSessionPopErrandPost).toHaveBeenCalledWith(<SessionContextModel>{
+            expect(
+                gameSessionService.ApiV1GameSessionPopErrandPost
+            ).toHaveBeenCalledWith(<SessionContextModel>{
                 sessionId: expectedSession
             });
         });

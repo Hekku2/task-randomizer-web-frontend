@@ -1,7 +1,7 @@
 /* tslint:disable */
-export interface Event {
+export interface SessionEventModel {
   sessionId?: string;
-  eventType?: number;
+  eventType?: string;
   name?: string;
   description?: string;
 }

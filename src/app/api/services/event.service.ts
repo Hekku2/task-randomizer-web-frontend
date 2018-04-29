@@ -9,7 +9,7 @@ import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators/map';
 import { filter } from 'rxjs/operators/filter';
 
-import { Event } from '../models/event';
+import { SessionEventModel } from '../models/session-event-model';
 @Injectable()
 class EventService extends BaseService {
   constructor(
@@ -23,7 +23,7 @@ class EventService extends BaseService {
    * @param sessionId ID of session
    * @return Success
    */
-  ApiV1EventBySessionIdGetResponse(sessionId: string): Observable<HttpResponse<Array<Event>>> {
+  ApiV1EventBySessionIdGetResponse(sessionId: string): Observable<HttpResponse<Array<SessionEventModel>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -42,9 +42,9 @@ class EventService extends BaseService {
       filter(_r => _r instanceof HttpResponse),
       map(_r => {
         let _resp = _r as HttpResponse<any>;
-        let _body: Array<Event> = null;
-        _body = _resp.body as Array<Event>;
-        return _resp.clone({body: _body}) as HttpResponse<Array<Event>>;
+        let _body: Array<SessionEventModel> = null;
+        _body = _resp.body as Array<SessionEventModel>;
+        return _resp.clone({body: _body}) as HttpResponse<Array<SessionEventModel>>;
       })
     );
   }
@@ -53,7 +53,7 @@ class EventService extends BaseService {
    * @param sessionId ID of session
    * @return Success
    */
-  ApiV1EventBySessionIdGet(sessionId: string): Observable<Array<Event>> {
+  ApiV1EventBySessionIdGet(sessionId: string): Observable<Array<SessionEventModel>> {
     return this.ApiV1EventBySessionIdGetResponse(sessionId).pipe(
       map(_r => _r.body)
     );
