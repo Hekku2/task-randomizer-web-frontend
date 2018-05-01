@@ -7,6 +7,7 @@ import {
 import { EventService, GameSessionService } from '../../api/services';
 import { ActivatedRoute } from '@angular/router';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { ErrorService } from '../../services/error.service';
 
 @Component({
     selector: 'app-session-live',
@@ -20,32 +21,23 @@ export class SessionLiveComponent implements OnInit {
     constructor(
         private eventService: EventService,
         private gameSessionService: GameSessionService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private error: ErrorService
     ) {}
 
     ngOnInit() {
-        this.route.params.subscribe(
-            params => {
-                this.sessionId = <string>params['sessionId'];
-                this.updateEvents();
-            },
-            error => {
-                // TODO Issue #8 Unified error handling
-                throw error;
-            }
-        );
+        this.route.params.subscribe(params => {
+            this.sessionId = <string>params['sessionId'];
+            this.updateEvents();
+        }, this.error.handleError);
     }
 
     private updateEvents() {
-        this.eventService.ApiV1EventBySessionIdGet(this.sessionId).subscribe(
-            events => {
+        this.eventService
+            .ApiV1EventBySessionIdGet(this.sessionId)
+            .subscribe(events => {
                 this.events = events;
-            },
-            error => {
-                // TODO Issue #8 Unified error handling
-                throw error;
-            }
-        );
+            }, this.error.handleError);
     }
 
     public popErrand() {
@@ -55,15 +47,9 @@ export class SessionLiveComponent implements OnInit {
             .ApiV1GameSessionPopErrandPost(<SessionContextModel>{
                 sessionId: this.sessionId
             })
-            .subscribe(
-                () => {
-                    // TODO THis is a tempoary solution until signalR implemenation is done (issue #12)
-                    this.updateEvents();
-                },
-                error => {
-                    // TODO Issue #8 Unified error handling
-                    throw error;
-                }
-            );
+            .subscribe(() => {
+                // TODO This is a tempoary solution until signalR implemenation is done (issue #12)
+                this.updateEvents();
+            }, this.error.handleError);
     }
 }
