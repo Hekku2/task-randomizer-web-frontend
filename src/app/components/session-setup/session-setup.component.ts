@@ -1,7 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GameSessionService, GameService } from '../../api/services';
-import { SessionSettingsModel } from '../../api/models';
+import { SessionSettingsModel, GameModel } from '../../api/models';
+import { ErrorService } from '../../services/error.service';
 
 @Component({
     selector: 'app-session-setup',
@@ -9,24 +10,21 @@ import { SessionSettingsModel } from '../../api/models';
     styleUrls: ['./session-setup.component.css']
 })
 export class SessionSetupComponent implements OnInit {
-    games: any[];
+    games: GameModel[];
     selectedGame: number;
 
     constructor(
         private gameSessionService: GameSessionService,
         private gameService: GameService,
-        private route: Router
+        private route: Router,
+        private error: ErrorService
     ) {}
 
     ngOnInit() {
         this.gameService.ApiV1GameGet().subscribe(
             result => {
                 this.games = result;
-            },
-            error => {
-                // TODO Issue #8 Unified error handling
-                throw error;
-            }
+            }, this.error.handleError
         );
     }
 
@@ -37,6 +35,6 @@ export class SessionSetupComponent implements OnInit {
             })
             .subscribe(result => {
                 this.route.navigate(['session-lobby', result.replace(/\"/g, '')]);
-            });
+            }, this.error.handleError);
     }
 }

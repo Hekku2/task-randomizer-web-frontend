@@ -8,11 +8,13 @@ import { Router } from '@angular/router';
 import { MaterialAppModule } from '../../ngmaterial.module';
 import { GameModel } from '../../api/models';
 import { GameSessionService, GameService } from '../../api/services';
+import { ErrorService } from '../../services/error.service';
 
 describe('SessionSetupComponent', () => {
     let component: SessionSetupComponent;
     let fixture: ComponentFixture<SessionSetupComponent>;
 
+    let errorService;
     let route;
     let gameSessionService;
     let gameSessionStartResponse: ReplaySubject<string>;
@@ -20,6 +22,7 @@ describe('SessionSetupComponent', () => {
     let getAllResponse: ReplaySubject<GameModel[]>;
 
     beforeEach(async(() => {
+        errorService = jasmine.createSpyObj('ErrorService', ['handleError']);
         gameSessionService = jasmine.createSpyObj('GameSessionService', [
             'ApiV1GameSessionStartPost'
         ]);
@@ -40,7 +43,8 @@ describe('SessionSetupComponent', () => {
             ],
             providers: [
                 { provide: GameSessionService, useValue: gameSessionService },
-                { provide: GameService, useValue: gameService }
+                { provide: GameService, useValue: gameService },
+                { provide: ErrorService, useFactory: () => errorService }
             ],
             declarations: [SessionSetupComponent]
         }).compileComponents();
@@ -69,6 +73,11 @@ describe('SessionSetupComponent', () => {
         getAllResponse.next(expectedGames);
 
         expect(component.games).toEqual(expectedGames);
+    });
+
+    it('should handle service error', () => {
+        getAllResponse.error('error');
+        expect(errorService.handleError).toHaveBeenCalledWith('error');
     });
 
     describe('startSession', () => {
@@ -101,6 +110,14 @@ describe('SessionSetupComponent', () => {
             gameSessionStartResponse.next('\"newSessionId\"');
 
             expect(spy).toHaveBeenCalledWith(['session-lobby', 'newSessionId']);
+        });
+
+        it('should handle service error', () => {
+            const gameId = 666;
+            component.selectedGame = gameId;
+            component.startSession();
+            gameSessionStartResponse.error('error');
+            expect(errorService.handleError).toHaveBeenCalledWith('error');
         });
     });
 });
