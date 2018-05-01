@@ -7,15 +7,18 @@ import { MaterialAppModule } from '../../ngmaterial.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GameSessionModel } from '../../api/models';
 import { GameSessionService } from '../../api/services';
+import { ErrorService } from '../../services/error.service';
 
 describe('SessionListComponent', () => {
     let component: SessionListComponent;
     let fixture: ComponentFixture<SessionListComponent>;
 
+    let errorService;
     let gameSessionService;
     let gameSessionsResponse;
 
     beforeEach(async(() => {
+        errorService = jasmine.createSpyObj('ErrorService', ['handleError']);
         gameSessionService = jasmine.createSpyObj('GameSessionService', [
             'ApiV1GameSessionGet'
         ]);
@@ -27,7 +30,8 @@ describe('SessionListComponent', () => {
         TestBed.configureTestingModule({
             imports: [MaterialAppModule, RouterTestingModule.withRoutes([])],
             providers: [
-                { provide: GameSessionService, useValue: gameSessionService }
+                { provide: GameSessionService, useValue: gameSessionService },
+                { provide: ErrorService, useFactory: () => errorService }
             ],
             declarations: [SessionListComponent]
         }).compileComponents();
@@ -79,5 +83,10 @@ describe('SessionListComponent', () => {
                 gameName: 'session 3'
             }
         ]);
+    });
+
+    it('should handle service error', () => {
+        gameSessionsResponse.error('error');
+        expect(errorService.handleError).toHaveBeenCalledWith('error');
     });
 });
