@@ -11,9 +11,8 @@ import { filter } from 'rxjs/operators/filter';
 
 import { GameSessionModel } from '../models/game-session-model';
 import { SessionSettingsModel } from '../models/session-settings-model';
-import { SessionJoinModel } from '../models/session-join-model';
-import { ErrandModel } from '../models/errand-model';
 import { SessionContextModel } from '../models/session-context-model';
+import { ErrandModel } from '../models/errand-model';
 @Injectable()
 class GameSessionService extends BaseService {
   constructor(
@@ -143,7 +142,7 @@ class GameSessionService extends BaseService {
   /**
    * @param joinParameters undefined
    */
-  ApiV1GameSessionJoinPostResponse(joinParameters?: SessionJoinModel): Observable<HttpResponse<void>> {
+  ApiV1GameSessionJoinPostResponse(joinParameters?: SessionContextModel): Observable<HttpResponse<void>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -172,8 +171,46 @@ class GameSessionService extends BaseService {
   /**
    * @param joinParameters undefined
    */
-  ApiV1GameSessionJoinPost(joinParameters?: SessionJoinModel): Observable<void> {
+  ApiV1GameSessionJoinPost(joinParameters?: SessionContextModel): Observable<void> {
     return this.ApiV1GameSessionJoinPostResponse(joinParameters).pipe(
+      map(_r => _r.body)
+    );
+  }
+
+  /**
+   * @param joinParameters undefined
+   */
+  ApiV1GameSessionLeavePostResponse(joinParameters?: SessionContextModel): Observable<HttpResponse<void>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = joinParameters;
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/v1/GameSession/leave`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'text'
+      });
+
+    return this.http.request<any>(req).pipe(
+      filter(_r => _r instanceof HttpResponse),
+      map(_r => {
+        let _resp = _r as HttpResponse<any>;
+        let _body: void = null;
+
+        return _resp.clone({body: _body}) as HttpResponse<void>;
+      })
+    );
+  }
+
+  /**
+   * @param joinParameters undefined
+   */
+  ApiV1GameSessionLeavePost(joinParameters?: SessionContextModel): Observable<void> {
+    return this.ApiV1GameSessionLeavePostResponse(joinParameters).pipe(
       map(_r => _r.body)
     );
   }

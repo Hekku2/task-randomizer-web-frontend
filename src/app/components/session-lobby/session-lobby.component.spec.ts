@@ -7,9 +7,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GameSessionService } from '../../api/services';
 import { GameSessionModel } from '../../api/models/game-session-model';
-import { SessionJoinModel } from '../../api/models';
 import { ErrorService } from '../../services/error.service';
 import { FormsModule } from '@angular/forms';
+import { SessionContextModel } from '../../api/models';
 
 describe('SessionLobbyComponent', () => {
     let component: SessionLobbyComponent;
@@ -110,7 +110,7 @@ describe('SessionLobbyComponent', () => {
                 id: 'mocksession',
                 gameName: 'test game'
             };
-            const expectedJoinModel = <SessionJoinModel>{
+            const expectedJoinModel = <SessionContextModel>{
                 sessionId: expectedSession.id,
                 playerName: 'Default name'
             };

@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GameSessionService } from '../../api/services';
-import { GameSessionModel, SessionJoinModel } from '../../api/models';
+import { GameSessionModel, SessionContextModel } from '../../api/models';
 import { ErrorService } from '../../services/error.service';
 
 @Component({
@@ -12,7 +12,6 @@ import { ErrorService } from '../../services/error.service';
 export class SessionLobbyComponent implements OnInit {
     session = <GameSessionModel>{};
 
-    // TODO #9 Bind this to actual element in page
     @Input() playerName = 'Default name';
 
     constructor(
@@ -37,7 +36,7 @@ export class SessionLobbyComponent implements OnInit {
     }
 
     public joinSession() {
-        const joinModel = <SessionJoinModel>{
+        const joinModel = <SessionContextModel>{
             sessionId: this.session.id,
             playerName: this.playerName
         };
