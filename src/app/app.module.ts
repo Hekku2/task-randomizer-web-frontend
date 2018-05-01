@@ -15,6 +15,7 @@ import { ApiConfiguration } from './api/api-configuration';
 import { ApiModule } from './api/api.module';
 import { environment } from '../environments/environment';
 import { SessionLiveComponent } from './components/session-live/session-live.component';
+import { ErrorService } from './services/error.service';
 
 export function initApiConfiguration(config: ApiConfiguration): Function {
     return () => {
@@ -45,7 +46,7 @@ export function initApiConfiguration(config: ApiConfiguration): Function {
         MaterialAppModule,
         ApiModule
     ],
-    providers: [INIT_API_CONFIGURATION, GameSessionService, GameService],
+    providers: [INIT_API_CONFIGURATION, GameSessionService, GameService, ErrorService],
     bootstrap: [AppComponent]
 })
 export class AppModule {}
