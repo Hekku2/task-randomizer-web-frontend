@@ -9,6 +9,7 @@ import { GameSessionService } from '../../api/services';
 import { GameSessionModel } from '../../api/models/game-session-model';
 import { SessionJoinModel } from '../../api/models';
 import { ErrorService } from '../../services/error.service';
+import { FormsModule } from '@angular/forms';
 
 describe('SessionLobbyComponent', () => {
     let component: SessionLobbyComponent;
@@ -37,7 +38,11 @@ describe('SessionLobbyComponent', () => {
         );
 
         TestBed.configureTestingModule({
-            imports: [MaterialAppModule, RouterTestingModule.withRoutes([])],
+            imports: [
+                MaterialAppModule,
+                RouterTestingModule.withRoutes([]),
+                FormsModule
+            ],
             providers: [
                 { provide: GameSessionService, useValue: gameSessionService },
                 { provide: ActivatedRoute, useFactory: () => route },
