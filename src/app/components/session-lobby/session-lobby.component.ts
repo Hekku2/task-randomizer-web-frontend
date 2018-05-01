@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GameSessionService } from '../../api/services';
 import { GameSessionModel, SessionJoinModel } from '../../api/models';
+import { ErrorService } from '../../services/error.service';
 
 @Component({
     selector: 'app-session-lobby',
@@ -17,41 +18,34 @@ export class SessionLobbyComponent implements OnInit {
     constructor(
         private gameSessionService: GameSessionService,
         private route: ActivatedRoute,
-        private router: Router
+        private router: Router,
+        private error: ErrorService
     ) {}
 
     ngOnInit() {
-        this.route.params.subscribe(
-            params => {
-                const sessionId = params['sessionId'];
-                this.gameSessionService
-                    .ApiV1GameSessionByIdGet(sessionId)
-                    .subscribe(
-                        session => {
-                            this.session = session;
-                        },
-                        error => {
-                            // TODO Issue #8 Unified error handling
-                            throw error;
-                        }
-                    );
-            },
-            error => {
-                // TODO Issue #8 Unified error handling
-                throw error;
-            }
-        );
+        this.route.params.subscribe(params => {
+            this.getSession(params['sessionId']);
+        }, this.error.handleError);
+    }
+
+    private getSession(sessionId) {
+        this.gameSessionService
+            .ApiV1GameSessionByIdGet(sessionId)
+            .subscribe(session => {
+                this.session = session;
+            }, this.error.handleError);
     }
 
     public joinSession() {
+        const joinModel = <SessionJoinModel>{
+            sessionId: this.session.id,
+            playerName: this.playerName
+        };
         // TODO This should only be called after route is ready issue #14
         this.gameSessionService
-            .ApiV1GameSessionJoinPost(<SessionJoinModel>{
-                sessionId: this.session.id,
-                playerName: this.playerName
-            })
+            .ApiV1GameSessionJoinPost(joinModel)
             .subscribe(() => {
                 this.router.navigate(['session-live', this.session.id]);
-            });
+            }, this.error.handleError);
     }
 }

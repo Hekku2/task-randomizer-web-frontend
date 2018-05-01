@@ -8,11 +8,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GameSessionService } from '../../api/services';
 import { GameSessionModel } from '../../api/models/game-session-model';
 import { SessionJoinModel } from '../../api/models';
+import { ErrorService } from '../../services/error.service';
 
 describe('SessionLobbyComponent', () => {
     let component: SessionLobbyComponent;
     let fixture: ComponentFixture<SessionLobbyComponent>;
 
+    let errorService;
     let gameSessionService;
     let gameSessionResponse;
 
@@ -20,6 +22,7 @@ describe('SessionLobbyComponent', () => {
     let router;
 
     beforeEach(async(() => {
+        errorService = jasmine.createSpyObj('ErrorService', ['handleError']);
         route = {
             params: new ReplaySubject<any>(1)
         };
@@ -37,7 +40,8 @@ describe('SessionLobbyComponent', () => {
             imports: [MaterialAppModule, RouterTestingModule.withRoutes([])],
             providers: [
                 { provide: GameSessionService, useValue: gameSessionService },
-                { provide: ActivatedRoute, useFactory: () => route }
+                { provide: ActivatedRoute, useFactory: () => route },
+                { provide: ErrorService, useFactory: () => errorService }
             ],
             declarations: [SessionLobbyComponent]
         }).compileComponents();
@@ -72,6 +76,24 @@ describe('SessionLobbyComponent', () => {
         expect(component.session).toBe(expectedSession);
     });
 
+    it('should handle params error', () => {
+        route.params.error('error');
+        expect(errorService.handleError).toHaveBeenCalledWith('error');
+    });
+
+    it('should handle session service error', () => {
+        const sessionId = 'mockSession';
+
+        route.params.next({
+            sessionId: sessionId
+        });
+        expect(gameSessionService.ApiV1GameSessionByIdGet).toHaveBeenCalledWith(
+            sessionId
+        );
+        gameSessionResponse.error('error');
+        expect(errorService.handleError).toHaveBeenCalledWith('error');
+    });
+
     describe('joinSession', () => {
         it('should direct user to live session page and join to session', () => {
             const joinResponse = new ReplaySubject<void>(1);
@@ -104,6 +126,28 @@ describe('SessionLobbyComponent', () => {
             expect(
                 gameSessionService.ApiV1GameSessionJoinPost
             ).toHaveBeenCalledWith(expectedJoinModel);
+        });
+
+        it('should handle join session error', () => {
+            const joinResponse = new ReplaySubject<void>(1);
+            gameSessionService.ApiV1GameSessionJoinPost.and.returnValue(
+                joinResponse
+            );
+
+            const expectedSession = <GameSessionModel>{
+                id: 'mocksession',
+                gameName: 'test game'
+            };
+
+            route.params.next({
+                sessionId: expectedSession.id
+            });
+            gameSessionResponse.next(expectedSession);
+
+            component.joinSession();
+
+            joinResponse.error('Error');
+            expect(errorService.handleError).toHaveBeenCalledWith('Error');
         });
     });
 });
