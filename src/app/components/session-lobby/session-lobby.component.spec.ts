@@ -126,7 +126,8 @@ describe('SessionLobbyComponent', () => {
             joinResponse.next(<void>null);
             expect(spy).toHaveBeenCalledWith([
                 'session-live',
-                expectedSession.id
+                expectedSession.id,
+                expectedJoinModel.playerName
             ]);
             expect(
                 gameSessionService.ApiV1GameSessionJoinPost

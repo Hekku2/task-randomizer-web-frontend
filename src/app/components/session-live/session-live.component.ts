@@ -5,7 +5,7 @@ import {
     SessionEventModel
 } from '../../api/models';
 import { EventService, GameSessionService } from '../../api/services';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { ErrorService } from '../../services/error.service';
 
@@ -16,18 +16,21 @@ import { ErrorService } from '../../services/error.service';
 })
 export class SessionLiveComponent implements OnInit {
     private sessionId: string;
+    private playerName: string;
     events: Array<SessionEventModel> = [];
 
     constructor(
         private eventService: EventService,
         private gameSessionService: GameSessionService,
         private route: ActivatedRoute,
+        private router: Router,
         private error: ErrorService
     ) {}
 
     ngOnInit() {
         this.route.params.subscribe(params => {
             this.sessionId = <string>params['sessionId'];
+            this.playerName = <string>params['playerName'];
             this.updateEvents();
         }, this.error.handleError);
     }
@@ -42,7 +45,7 @@ export class SessionLiveComponent implements OnInit {
 
     public popErrand() {
         // TODO This should only be called after route is ready (issue #14)
-        // TODO Event shoul be handled int by issue #12
+        // TODO Event should be handled in by issue #12
         this.gameSessionService
             .ApiV1GameSessionPopErrandPost(<SessionContextModel>{
                 sessionId: this.sessionId
@@ -50,6 +53,18 @@ export class SessionLiveComponent implements OnInit {
             .subscribe(() => {
                 // TODO This is a tempoary solution until signalR implemenation is done (issue #12)
                 this.updateEvents();
+            }, this.error.handleError);
+    }
+
+    public leaveSession() {
+        // TODO This should only be called after route is ready (issue #14)
+        this.gameSessionService
+            .ApiV1GameSessionLeavePost(<SessionContextModel>{
+                sessionId: this.sessionId,
+                playerName: this.playerName
+            })
+            .subscribe(() => {
+                this.router.navigate(['session-lobby', this.sessionId ]);
             }, this.error.handleError);
     }
 }

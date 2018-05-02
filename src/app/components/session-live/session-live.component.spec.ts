@@ -3,10 +3,11 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SessionLiveComponent } from './session-live.component';
 import { MaterialAppModule } from '../../ngmaterial.module';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EventService, GameSessionService } from '../../api/services';
 import { SessionContextModel, SessionEventModel } from '../../api/models';
 import { ErrorService } from '../../services/error.service';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('SessionLiveComponent', () => {
     let component: SessionLiveComponent;
@@ -18,11 +19,17 @@ describe('SessionLiveComponent', () => {
     let gameEventsResponse;
 
     let route;
+    let router;
+
+    const expectedSession = 'sessiontestid';
+    const expectedPlayerName = 'test player!';
+    const events = <SessionEventModel[]>[{ eventType: 'event' }, { eventType: 'event' }];
 
     beforeEach(async(() => {
         errorService = jasmine.createSpyObj('ErrorService', ['handleError']);
         gameSessionService = jasmine.createSpyObj('GameSessionService', [
-            'ApiV1GameSessionPopErrandPost'
+            'ApiV1GameSessionPopErrandPost',
+            'ApiV1GameSessionLeavePost'
         ]);
 
         gameEventService = jasmine.createSpyObj('EventService', [
@@ -38,7 +45,7 @@ describe('SessionLiveComponent', () => {
         };
 
         TestBed.configureTestingModule({
-            imports: [MaterialAppModule],
+            imports: [MaterialAppModule, RouterTestingModule.withRoutes([])],
             providers: [
                 { provide: ActivatedRoute, useFactory: () => route },
                 { provide: EventService, useFactory: () => gameEventService },
@@ -50,6 +57,7 @@ describe('SessionLiveComponent', () => {
             ],
             declarations: [SessionLiveComponent]
         }).compileComponents();
+        router = TestBed.get(Router);
     }));
 
     beforeEach(() => {
@@ -63,13 +71,6 @@ describe('SessionLiveComponent', () => {
     });
 
     it('should get events when loaded', () => {
-        const expectedSession = 'test';
-
-        const events = <SessionEventModel[]>[
-            { eventType: 'Test1' },
-            { eventType: 'Test2' }
-        ];
-
         route.params.next({
             sessionId: expectedSession
         });
@@ -87,7 +88,6 @@ describe('SessionLiveComponent', () => {
     });
 
     it('should handle event service error', () => {
-        const expectedSession = 'test';
         route.params.next({
             sessionId: expectedSession
         });
@@ -100,15 +100,15 @@ describe('SessionLiveComponent', () => {
     });
 
     describe('popErrand', () => {
-        it('should call api', () => {
-            const expectedSession = 'test';
-            const events = [{ eventType: 1 }, { eventType: 2 }];
-
+        beforeEach(() => {
             route.params.next({
-                sessionId: expectedSession
+                sessionId: expectedSession,
+                playerName: expectedPlayerName
             });
             gameEventsResponse.next(events);
+        });
 
+        it('should call api', () => {
             gameSessionService.ApiV1GameSessionPopErrandPost.and.returnValue(
                 new ReplaySubject<any>(1)
             );
@@ -123,16 +123,10 @@ describe('SessionLiveComponent', () => {
         });
 
         it('should handle api error', () => {
-            const expectedSession = 'test';
-            const events = [{ eventType: 1 }, { eventType: 2 }];
-
-            route.params.next({
-                sessionId: expectedSession
-            });
-            gameEventsResponse.next(events);
-
             const result = new ReplaySubject<any>(1);
-            gameSessionService.ApiV1GameSessionPopErrandPost.and.returnValue(result);
+            gameSessionService.ApiV1GameSessionPopErrandPost.and.returnValue(
+                result
+            );
 
             component.popErrand();
             result.error('Error!');
@@ -143,6 +137,65 @@ describe('SessionLiveComponent', () => {
                 sessionId: expectedSession
             });
             expect(errorService.handleError).toHaveBeenCalledWith('Error!');
+        });
+    });
+
+    describe('leaveSession', () => {
+        beforeEach(() => {
+            route.params.next({
+                sessionId: expectedSession,
+                playerName: expectedPlayerName
+            });
+            gameEventsResponse.next(events);
+        });
+
+        it('should call service', () => {
+            gameSessionService.ApiV1GameSessionLeavePost.and.returnValue(
+                new ReplaySubject<any>(1)
+            );
+
+            component.leaveSession();
+
+            expect(
+                gameSessionService.ApiV1GameSessionLeavePost
+            ).toHaveBeenCalledWith(<SessionContextModel>{
+                sessionId: expectedSession,
+                playerName: expectedPlayerName
+            });
+        });
+
+        it('should handle api error', () => {
+            const result = new ReplaySubject<any>(1);
+            gameSessionService.ApiV1GameSessionLeavePost.and.returnValue(
+                result
+            );
+
+            component.leaveSession();
+            result.error('Error!');
+
+            expect(
+                gameSessionService.ApiV1GameSessionLeavePost
+            ).toHaveBeenCalledWith(<SessionContextModel>{
+                sessionId: expectedSession,
+                playerName: expectedPlayerName
+            });
+            expect(errorService.handleError).toHaveBeenCalledWith('Error!');
+        });
+
+        it('should redirect user back to lobby', () => {
+            const spy = spyOn(router, 'navigate');
+
+            const result = new ReplaySubject<any>(1);
+            gameSessionService.ApiV1GameSessionLeavePost.and.returnValue(
+                result
+            );
+
+            component.leaveSession();
+            result.next(<void>null);
+            expect(spy).toHaveBeenCalledWith([
+                'session-lobby',
+                expectedSession,
+            ]);
         });
     });
 });

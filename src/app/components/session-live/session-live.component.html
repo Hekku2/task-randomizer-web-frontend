@@ -1,13 +1,14 @@
 <mat-card>
   <mat-card-title>Session events </mat-card-title>
   <mat-card-content>
-      <mat-list>
-        <mat-list-item *ngFor="let e of events">
-          {{e.name}} {{e.description}}
-        </mat-list-item>
-      </mat-list>
+    <mat-list>
+      <mat-list-item *ngFor="let e of events">
+        {{e.name}} {{e.description}}
+      </mat-list-item>
+    </mat-list>
   </mat-card-content>
   <mat-card-actions>
+    <button mat-button (click)="leaveSession()">Leave</button>
     <button mat-button (click)="popErrand()">Pop errand</button>
   </mat-card-actions>
 </mat-card>

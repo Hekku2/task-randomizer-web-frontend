@@ -11,7 +11,7 @@ const routes: Routes = [
     { path: 'app', component: HomeComponent },
     { path: 'session-setup', component: SessionSetupComponent },
     { path: 'session-lobby/:sessionId', component: SessionLobbyComponent },
-    { path: 'session-live/:sessionId', component: SessionLiveComponent },
+    { path: 'session-live/:sessionId/:playerName', component: SessionLiveComponent },
 ];
 
 @NgModule({

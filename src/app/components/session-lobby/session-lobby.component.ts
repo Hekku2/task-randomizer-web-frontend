@@ -44,7 +44,7 @@ export class SessionLobbyComponent implements OnInit {
         this.gameSessionService
             .ApiV1GameSessionJoinPost(joinModel)
             .subscribe(() => {
-                this.router.navigate(['session-live', this.session.id]);
+                this.router.navigate(['session-live', this.session.id, this.playerName]);
             }, this.error.handleError);
     }
 }
