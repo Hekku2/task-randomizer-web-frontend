@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {
     GameSessionModel,
     SessionContextModel,
-    SessionEventModel
+    SessionEventModel,
+    ErrandModel
 } from '../../api/models';
 import { EventService, GameSessionService } from '../../api/services';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -18,6 +19,9 @@ export class SessionLiveComponent implements OnInit {
     private sessionId: string;
     private playerName: string;
     events: Array<SessionEventModel> = [];
+    currentErrand: ErrandModel = {
+        description: ''
+    };
 
     constructor(
         private eventService: EventService,
@@ -40,6 +44,12 @@ export class SessionLiveComponent implements OnInit {
             .ApiV1EventBySessionIdGet(this.sessionId)
             .subscribe(events => {
                 this.events = events;
+
+                events.forEach(element => {
+                    if (element.eventType === 'ErrandPopped') {
+                        this.currentErrand.description = element.description;
+                    }
+                });
             }, this.error.handleError);
     }
 
@@ -64,7 +74,7 @@ export class SessionLiveComponent implements OnInit {
                 playerName: this.playerName
             })
             .subscribe(() => {
-                this.router.navigate(['session-lobby', this.sessionId ]);
+                this.router.navigate(['session-lobby', this.sessionId]);
             }, this.error.handleError);
     }
 }

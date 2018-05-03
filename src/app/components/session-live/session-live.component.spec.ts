@@ -5,7 +5,11 @@ import { MaterialAppModule } from '../../ngmaterial.module';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventService, GameSessionService } from '../../api/services';
-import { SessionContextModel, SessionEventModel } from '../../api/models';
+import {
+    SessionContextModel,
+    SessionEventModel,
+    ErrandModel
+} from '../../api/models';
 import { ErrorService } from '../../services/error.service';
 import { RouterTestingModule } from '@angular/router/testing';
 
@@ -23,7 +27,21 @@ describe('SessionLiveComponent', () => {
 
     const expectedSession = 'sessiontestid';
     const expectedPlayerName = 'test player!';
-    const events = <SessionEventModel[]>[{ eventType: 'event' }, { eventType: 'event' }];
+    const events = <SessionEventModel[]>[
+        { eventType: 'SessionCreated' },
+        {
+            eventType: 'ErrandPopped',
+            description: 'test errand !'
+        },
+        {
+            eventType: 'ErrandPopped',
+            description: 'current errand!'
+        },
+        {
+            eventType: 'PlayerJoined',
+            description: 'Test player joined!'
+        }
+    ];
 
     beforeEach(async(() => {
         errorService = jasmine.createSpyObj('ErrorService', ['handleError']);
@@ -80,6 +98,17 @@ describe('SessionLiveComponent', () => {
             expectedSession
         );
         expect(component.events).toBe(events);
+    });
+
+    it('should set current errands when event is loaded', () => {
+        route.params.next({
+            sessionId: expectedSession
+        });
+        gameEventsResponse.next(events);
+
+        expect(component.currentErrand).toEqual(<ErrandModel>{
+            description: 'current errand!'
+        });
     });
 
     it('should handle params error', () => {
@@ -194,7 +223,7 @@ describe('SessionLiveComponent', () => {
             result.next(<void>null);
             expect(spy).toHaveBeenCalledWith([
                 'session-lobby',
-                expectedSession,
+                expectedSession
             ]);
         });
     });
