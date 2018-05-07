@@ -9,6 +9,7 @@ import { EventService, GameSessionService } from '../../api/services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { ErrorService } from '../../services/error.service';
+import { MessageService } from '../../services/message.service';
 
 @Component({
     selector: 'app-session-live',
@@ -26,6 +27,7 @@ export class SessionLiveComponent implements OnInit {
     constructor(
         private eventService: EventService,
         private gameSessionService: GameSessionService,
+        private message: MessageService,
         private route: ActivatedRoute,
         private router: Router,
         private error: ErrorService
@@ -35,21 +37,36 @@ export class SessionLiveComponent implements OnInit {
         this.route.params.subscribe(params => {
             this.sessionId = <string>params['sessionId'];
             this.playerName = <string>params['playerName'];
+
+            this.message.connectionReady.subscribe(_ => {
+                console.log('ready');
+                this.message.listen(this.sessionId).subscribe({
+                    closed: false,
+                    next: item => {
+                        this.handleEvent(item);
+                    },
+                    error: error => {
+                        this.error.handleError(error);
+                    },
+                });;
+            });
+
             this.updateEvents();
         }, this.error.handleError);
+    }
+
+    private handleEvent(event:any) {
+        if (event.eventType === 'ErrandPopped') {
+            this.currentErrand.description = event.description;
+        }
+        this.events.push(event);
     }
 
     private updateEvents() {
         this.eventService
             .ApiV1EventBySessionIdGet(this.sessionId)
             .subscribe(events => {
-                this.events = events;
-
-                events.forEach(element => {
-                    if (element.eventType === 'ErrandPopped') {
-                        this.currentErrand.description = element.description;
-                    }
-                });
+                events.forEach(event => this.handleEvent(event));
             }, this.error.handleError);
     }
 
@@ -60,10 +77,7 @@ export class SessionLiveComponent implements OnInit {
             .ApiV1GameSessionPopErrandPost(<SessionContextModel>{
                 sessionId: this.sessionId
             })
-            .subscribe(() => {
-                // TODO This is a tempoary solution until signalR implemenation is done (issue #12)
-                this.updateEvents();
-            }, this.error.handleError);
+            .subscribe(() => {}, this.error.handleError);
     }
 
     public leaveSession() {

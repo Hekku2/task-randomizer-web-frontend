@@ -12,6 +12,7 @@ import {
 } from '../../api/models';
 import { ErrorService } from '../../services/error.service';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MessageService } from '../../services/message.service';
 
 describe('SessionLiveComponent', () => {
     let component: SessionLiveComponent;
@@ -68,6 +69,7 @@ describe('SessionLiveComponent', () => {
                 { provide: ActivatedRoute, useFactory: () => route },
                 { provide: EventService, useFactory: () => gameEventService },
                 { provide: ErrorService, useFactory: () => errorService },
+                { provide: MessageService, useFactory: () => {} },
                 {
                     provide: GameSessionService,
                     useFactory: () => gameSessionService

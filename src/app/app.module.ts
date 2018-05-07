@@ -16,18 +16,19 @@ import { ApiModule } from './api/api.module';
 import { environment } from '../environments/environment';
 import { SessionLiveComponent } from './components/session-live/session-live.component';
 import { ErrorService } from './services/error.service';
+import { MessageService } from './services/message.service';
 
 export function initApiConfiguration(config: ApiConfiguration): Function {
     return () => {
-      config.rootUrl = environment.apiUrl;
+        config.rootUrl = environment.apiUrl;
     };
-  }
-  export const INIT_API_CONFIGURATION: Provider = {
+}
+export const INIT_API_CONFIGURATION: Provider = {
     provide: APP_INITIALIZER,
     useFactory: initApiConfiguration,
     deps: [ApiConfiguration],
     multi: true
-  };
+};
 
 @NgModule({
     declarations: [
@@ -46,7 +47,13 @@ export function initApiConfiguration(config: ApiConfiguration): Function {
         MaterialAppModule,
         ApiModule
     ],
-    providers: [INIT_API_CONFIGURATION, GameSessionService, GameService, ErrorService],
+    providers: [
+        INIT_API_CONFIGURATION,
+        GameSessionService,
+        GameService,
+        ErrorService,
+        MessageService
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule {}
