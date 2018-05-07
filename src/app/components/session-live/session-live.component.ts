@@ -39,7 +39,6 @@ export class SessionLiveComponent implements OnInit {
             this.playerName = <string>params['playerName'];
 
             this.message.connectionReady.subscribe(_ => {
-                console.log('ready');
                 this.message.listen(this.sessionId).subscribe({
                     closed: false,
                     next: item => {
@@ -47,15 +46,15 @@ export class SessionLiveComponent implements OnInit {
                     },
                     error: error => {
                         this.error.handleError(error);
-                    },
-                });;
+                    }
+                });
             });
 
             this.updateEvents();
         }, this.error.handleError);
     }
 
-    private handleEvent(event:any) {
+    private handleEvent(event: any) {
         if (event.eventType === 'ErrandPopped') {
             this.currentErrand.description = event.description;
         }

@@ -18,6 +18,7 @@ describe('SessionLiveComponent', () => {
     let component: SessionLiveComponent;
     let fixture: ComponentFixture<SessionLiveComponent>;
 
+    let messageService;
     let errorService;
     let gameSessionService;
     let gameEventService;
@@ -45,6 +46,9 @@ describe('SessionLiveComponent', () => {
     ];
 
     beforeEach(async(() => {
+        messageService = jasmine.createSpyObj('MessageService', ['handleError']);
+        messageService.connectionReady = new ReplaySubject<boolean>(1);
+
         errorService = jasmine.createSpyObj('ErrorService', ['handleError']);
         gameSessionService = jasmine.createSpyObj('GameSessionService', [
             'ApiV1GameSessionPopErrandPost',
@@ -69,7 +73,7 @@ describe('SessionLiveComponent', () => {
                 { provide: ActivatedRoute, useFactory: () => route },
                 { provide: EventService, useFactory: () => gameEventService },
                 { provide: ErrorService, useFactory: () => errorService },
-                { provide: MessageService, useFactory: () => {} },
+                { provide: MessageService, useFactory: () => messageService },
                 {
                     provide: GameSessionService,
                     useFactory: () => gameSessionService
@@ -99,7 +103,7 @@ describe('SessionLiveComponent', () => {
         expect(gameEventService.ApiV1EventBySessionIdGet).toHaveBeenCalledWith(
             expectedSession
         );
-        expect(component.events).toBe(events);
+        expect(component.events).toEqual(events);
     });
 
     it('should set current errands when event is loaded', () => {
