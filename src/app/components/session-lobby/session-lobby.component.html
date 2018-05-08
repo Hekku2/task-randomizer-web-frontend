@@ -1,7 +1,7 @@
 <mat-card *ngIf="session">
   <mat-card-title>Session {{session.gameName}}</mat-card-title>
   <mat-card-content>
-    Players
+    <h3>Players</h3>
     <mat-list>
       <mat-list-item *ngIf="!session.players || session.players.length == 0">No players</mat-list-item>
       <mat-list-item *ngFor="let player of session.players">
@@ -13,6 +13,6 @@
     <mat-form-field>
       <input matInput [(ngModel)]="playerName" placeholder="Your name" value="Unnamed Player">
     </mat-form-field>
-    <button mat-button (click)="joinSession()">Join as new player</button>
+    <button mat-raised-button (click)="joinSession()">Join as new player</button>
   </mat-card-actions>
 </mat-card>
