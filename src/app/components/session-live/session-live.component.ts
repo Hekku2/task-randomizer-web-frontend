@@ -34,6 +34,8 @@ export class SessionLiveComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+        this.currentErrand.description = 'No task taken!';
+
         this.route.params.subscribe(params => {
             this.sessionId = <string>params['sessionId'];
             this.playerName = <string>params['playerName'];
