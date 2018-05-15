@@ -19,6 +19,8 @@ import { MessageService } from '../../services/message.service';
 export class SessionLiveComponent implements OnInit {
     private sessionId: string;
     private playerName: string;
+
+    errandsRemaining: number;
     events: Array<SessionEventModel> = [];
     currentErrand: ErrandModel = {
         description: ''
@@ -59,6 +61,7 @@ export class SessionLiveComponent implements OnInit {
     private handleEvent(event: any) {
         if (event.eventType === 'ErrandPopped') {
             this.currentErrand.description = event.description;
+            this.errandsRemaining = event.context.ErrandsRemaining;
         }
         this.events.push(event);
     }

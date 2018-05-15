@@ -33,15 +33,18 @@ describe('SessionLiveComponent', () => {
         { eventType: 'SessionCreated' },
         {
             eventType: 'ErrandPopped',
-            description: 'test errand !'
+            description: 'test errand !',
+            context: {}
         },
         {
             eventType: 'ErrandPopped',
-            description: 'current errand!'
+            description: 'current errand!',
+            context: {}
         },
         {
             eventType: 'PlayerJoined',
-            description: 'Test player joined!'
+            description: 'Test player joined!',
+            context: {}
         }
     ];
 

@@ -2,6 +2,7 @@
   <mat-card-title>Current errand: </mat-card-title>
   <mat-card-content>
     <span *ngIf="currentErrand">{{currentErrand.description}}</span>
+    <p>Remaining: {{errandsRemaining}}</p>
   </mat-card-content>
   <mat-card-actions>
     <button mat-raised-button (click)="leaveSession()">Leave</button>
