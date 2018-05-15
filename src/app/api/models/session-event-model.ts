@@ -4,4 +4,5 @@ export interface SessionEventModel {
   eventType?: string;
   name?: string;
   description?: string;
+  context?: {};
 }
