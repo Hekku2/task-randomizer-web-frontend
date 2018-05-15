@@ -6,7 +6,7 @@
   </mat-card-content>
   <mat-card-actions>
     <button mat-raised-button (click)="leaveSession()">Leave</button>
-    <button mat-raised-button (click)="popErrand()">Pop errand</button>
+    <button mat-raised-button [disabled]="errandsRemaining === 0" (click)="popErrand()">Pop errand</button>
   </mat-card-actions>
 </mat-card>
 
