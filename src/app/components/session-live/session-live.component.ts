@@ -21,6 +21,8 @@ export class SessionLiveComponent implements OnInit {
     private playerName: string;
 
     errandsRemaining: number;
+    errandPopper: string;
+
     events: Array<SessionEventModel> = [];
     currentErrand: ErrandModel = {
         description: ''
@@ -62,6 +64,7 @@ export class SessionLiveComponent implements OnInit {
         if (event.eventType === 'ErrandPopped') {
             this.currentErrand.description = event.description;
             this.errandsRemaining = event.context.ErrandsRemaining;
+            this.errandPopper = event.context.PlayerName;
         }
         this.events.push(event);
     }
@@ -79,7 +82,8 @@ export class SessionLiveComponent implements OnInit {
         // TODO Event should be handled in by issue #12
         this.gameSessionService
             .ApiV1GameSessionPopErrandPost(<SessionContextModel>{
-                sessionId: this.sessionId
+                sessionId: this.sessionId,
+                playerName: this.playerName
             })
             .subscribe(() => {}, this.error.handleError);
     }

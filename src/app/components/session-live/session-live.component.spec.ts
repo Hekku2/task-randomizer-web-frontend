@@ -156,7 +156,8 @@ describe('SessionLiveComponent', () => {
             expect(
                 gameSessionService.ApiV1GameSessionPopErrandPost
             ).toHaveBeenCalledWith(<SessionContextModel>{
-                sessionId: expectedSession
+                sessionId: expectedSession,
+                playerName: expectedPlayerName
             });
         });
 
@@ -172,7 +173,8 @@ describe('SessionLiveComponent', () => {
             expect(
                 gameSessionService.ApiV1GameSessionPopErrandPost
             ).toHaveBeenCalledWith(<SessionContextModel>{
-                sessionId: expectedSession
+                sessionId: expectedSession,
+                playerName: expectedPlayerName
             });
             expect(errorService.handleError).toHaveBeenCalledWith('Error!');
         });
