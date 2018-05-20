@@ -1,4 +1,14 @@
 version: '{build}'
+environment:
+  nodejs_version: "Stable"
+matrix:
+  fast_finish: true
+  
+install:
+  - ps: Install-Product node $env:nodejs_version
+  - ps: $env:path = $env:appdata + "\npm;" + $env:path
+  - npm install && npm install karma-ie-launcher
+  
 build_script:
 - npm install
 - ng build
