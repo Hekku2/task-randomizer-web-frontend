@@ -4,7 +4,7 @@ import { GameService } from '../../api/services';
 import { ErrorService } from '../../services/error.service';
 
 @Component({
-    selector: 'game-list',
+    selector: 'app-game-list',
     templateUrl: './game-list.component.html',
     styleUrls: ['./game-list.component.css']
 })
