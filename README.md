@@ -1,4 +1,6 @@
-# task-randomizer-web-frontend
+# Task Randomizer Web Frontend
+[![Build status](https://ci.appveyor.com/api/projects/status/716idu5la86y9b13?svg=true)](https://ci.appveyor.com/project/Hekku2/task-randomizer-web-frontend)
+
 Frontend implementation of Task Randomizer
 
 ## Building
