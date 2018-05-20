@@ -7,7 +7,6 @@ import {
 } from '../../api/models';
 import { EventService, GameSessionService } from '../../api/services';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { ErrorService } from '../../services/error.service';
 import { MessageService } from '../../services/message.service';
 

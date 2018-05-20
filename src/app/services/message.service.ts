@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HubConnection, LogLevel } from '@aspnet/signalr';
+import { HubConnection, LogLevel, HubConnectionBuilder } from '@aspnet/signalr';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs/Observable';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
-import signalR = require('@aspnet/signalr');
 
 @Injectable()
 export class MessageService {
@@ -12,8 +11,8 @@ export class MessageService {
     public connectionReady = new ReplaySubject<boolean>(1);
 
     constructor() {
-        this.connection = new signalR.HubConnectionBuilder()
-            .configureLogging(signalR.LogLevel.Trace)
+        this.connection = new HubConnectionBuilder()
+            .configureLogging(LogLevel.Trace)
             .withUrl(environment.signalR + 'gameSessionHub')
             .build();
 

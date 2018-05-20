@@ -2,7 +2,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SessionLiveComponent } from './session-live.component';
 import { MaterialAppModule } from '../../ngmaterial.module';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventService, GameSessionService } from '../../api/services';
 import {
@@ -13,6 +12,7 @@ import {
 import { ErrorService } from '../../services/error.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MessageService } from '../../services/message.service';
+import { ReplaySubject } from 'rxjs';
 
 describe('SessionLiveComponent', () => {
     let component: SessionLiveComponent;

@@ -1,0 +1,7 @@
+version: {build}
+build_script:
+- npm install
+- ng build
+test_script:
+- ng test
+- ng lint
