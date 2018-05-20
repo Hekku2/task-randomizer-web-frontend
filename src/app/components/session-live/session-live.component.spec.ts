@@ -30,7 +30,7 @@ describe('SessionLiveComponent', () => {
     const expectedSession = 'sessiontestid';
     const expectedPlayerName = 'test player!';
     const events = <SessionEventModel[]>[
-        { 
+        {
             eventType: 'SessionCreated',
             context: {}
         },
@@ -52,7 +52,9 @@ describe('SessionLiveComponent', () => {
     ];
 
     beforeEach(async(() => {
-        messageService = jasmine.createSpyObj('MessageService', ['handleError']);
+        messageService = jasmine.createSpyObj('MessageService', [
+            'handleError'
+        ]);
         messageService.connectionReady = new ReplaySubject<boolean>(1);
 
         errorService = jasmine.createSpyObj('ErrorService', ['handleError']);

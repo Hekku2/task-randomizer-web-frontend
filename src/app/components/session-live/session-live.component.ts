@@ -19,6 +19,8 @@ export class SessionLiveComponent implements OnInit {
     private sessionId: string;
     private playerName: string;
 
+    private players: string[] = [];
+
     errandsRemaining: number;
     errandPopper: string;
 
@@ -67,6 +69,16 @@ export class SessionLiveComponent implements OnInit {
         }
         if (event.eventType === 'SessionCreated') {
             this.errandsRemaining = event.context.ErrandsRemaining;
+        }
+        if (event.eventType === 'PlayerJoined') {
+            this.players.push(event.context.PlayerName);
+        }
+        if (event.eventType === 'PlayerLeft') {
+            const name = event.context.PlayerName;
+            const index = this.players.indexOf(name, 0);
+            if (index > -1) {
+                this.players.splice(index, 1);
+            }
         }
         this.events.push(event);
     }

@@ -11,6 +11,17 @@
   </mat-card-actions>
 </mat-card>
 
+<mat-card>
+  <mat-card-title>Players</mat-card-title>
+  <mat-card-content>
+    <mat-list>
+      <mat-list-item *ngFor="let player of players">
+        {{player}}
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+</mat-card>
+
 <mat-expansion-panel>
     <mat-expansion-panel-header>
         <mat-panel-title>
