@@ -30,7 +30,10 @@ describe('SessionLiveComponent', () => {
     const expectedSession = 'sessiontestid';
     const expectedPlayerName = 'test player!';
     const events = <SessionEventModel[]>[
-        { eventType: 'SessionCreated' },
+        { 
+            eventType: 'SessionCreated',
+            context: {}
+        },
         {
             eventType: 'ErrandPopped',
             description: 'test errand !',

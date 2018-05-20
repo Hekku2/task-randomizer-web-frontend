@@ -65,6 +65,9 @@ export class SessionLiveComponent implements OnInit {
             this.errandsRemaining = event.context.ErrandsRemaining;
             this.errandPopper = event.context.PlayerName;
         }
+        if (event.eventType === 'SessionCreated') {
+            this.errandsRemaining = event.context.ErrandsRemaining;
+        }
         this.events.push(event);
     }
 
