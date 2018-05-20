@@ -12,7 +12,7 @@ install:
   
 build_script:
 - npm install
-- ng build
+- ng build --no-progress --no-verbose
 test_script:
-- ng test --watch=false
+- ng test --watch=false --code-coverage --no-progress --no-verbose
 - ng lint
