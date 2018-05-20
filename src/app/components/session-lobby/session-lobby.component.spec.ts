@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SessionLobbyComponent } from './session-lobby.component';
-import { MaterialAppModule } from '../../ngmaterial.module';
+import { MaterialAppModule } from '../../modules/ngmaterial.module';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute, Router } from '@angular/router';

@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER, Provider } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import { MaterialAppModule } from './ngmaterial.module';
 import { AppComponent } from './app.component';
 import { SessionListComponent } from './components/session-list/session-list.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
@@ -17,6 +16,8 @@ import { environment } from '../environments/environment';
 import { SessionLiveComponent } from './components/session-live/session-live.component';
 import { ErrorService } from './services/error.service';
 import { MessageService } from './services/message.service';
+import { MaterialAppModule } from './modules/ngmaterial.module';
+import { GameListComponent } from './components/game-list/game-list.component';
 
 export function initApiConfiguration(config: ApiConfiguration): Function {
     return () => {
@@ -37,7 +38,8 @@ export const INIT_API_CONFIGURATION: Provider = {
         SessionSetupComponent,
         HomeComponent,
         SessionLobbyComponent,
-        SessionLiveComponent
+        SessionLiveComponent,
+        GameListComponent
     ],
     imports: [
         BrowserModule,

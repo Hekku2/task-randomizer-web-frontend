@@ -3,7 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { SessionListComponent } from './components/session-list/session-list.component';
 import { Component } from '@angular/core';
-import { MaterialAppModule } from './ngmaterial.module';
+import { MaterialAppModule } from './modules/ngmaterial.module';
 
 describe('AppComponent', () => {
     beforeEach(async(() => {

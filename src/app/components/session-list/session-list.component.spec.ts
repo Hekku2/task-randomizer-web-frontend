@@ -3,11 +3,11 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SessionListComponent } from './session-list.component';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { GameSessionListModel } from '../../models/GameSessionListModel';
-import { MaterialAppModule } from '../../ngmaterial.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GameSessionModel } from '../../api/models';
 import { GameSessionService } from '../../api/services';
 import { ErrorService } from '../../services/error.service';
+import { MaterialAppModule } from '../../modules/ngmaterial.module';
 
 describe('SessionListComponent', () => {
     let component: SessionListComponent;

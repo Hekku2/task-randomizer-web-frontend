@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
-import { MaterialAppModule } from '../../ngmaterial.module';
+import { MaterialAppModule } from '../../modules/ngmaterial.module';
 import { GameModel } from '../../api/models';
 import { GameSessionService, GameService } from '../../api/services';
 import { ErrorService } from '../../services/error.service';

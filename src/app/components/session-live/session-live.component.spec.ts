@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SessionLiveComponent } from './session-live.component';
-import { MaterialAppModule } from '../../ngmaterial.module';
+import { MaterialAppModule } from '../../modules/ngmaterial.module';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventService, GameSessionService } from '../../api/services';
 import {
