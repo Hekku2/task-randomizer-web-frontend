@@ -18,6 +18,7 @@ import { ErrorService } from './services/error.service';
 import { MessageService } from './services/message.service';
 import { MaterialAppModule } from './modules/ngmaterial.module';
 import { GameListComponent } from './components/game-list/game-list.component';
+import { GameDetailsComponent } from './components/game-details/game-details.component';
 
 export function initApiConfiguration(config: ApiConfiguration): Function {
     return () => {
@@ -39,7 +40,8 @@ export const INIT_API_CONFIGURATION: Provider = {
         HomeComponent,
         SessionLobbyComponent,
         SessionLiveComponent,
-        GameListComponent
+        GameListComponent,
+        GameDetailsComponent
     ],
     imports: [
         BrowserModule,

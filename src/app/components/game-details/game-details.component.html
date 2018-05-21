@@ -1,0 +1,10 @@
+<mat-card *ngIf="game">
+    <mat-card-title>Game details</mat-card-title>
+    <mat-card-content>
+        <form>
+            <mat-form-field>
+                <input matInput [(ngModel)]="game.name" placeholder="Name of the game" name="name">
+            </mat-form-field>
+        </form>
+    </mat-card-content>
+</mat-card>

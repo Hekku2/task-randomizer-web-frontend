@@ -6,6 +6,7 @@ import { HomeComponent } from './components/home/home.component';
 import { SessionLobbyComponent } from './components/session-lobby/session-lobby.component';
 import { SessionLiveComponent } from './components/session-live/session-live.component';
 import { GameListComponent } from './components/game-list/game-list.component';
+import { GameDetailsComponent } from './components/game-details/game-details.component';
 
 const routes: Routes = [
     { path: '', redirectTo: '/app', pathMatch: 'full' },
@@ -14,6 +15,7 @@ const routes: Routes = [
     { path: 'session-lobby/:sessionId', component: SessionLobbyComponent },
     { path: 'session-live/:sessionId/:playerName', component: SessionLiveComponent },
     { path: 'games', component: GameListComponent },
+    { path: 'games/:gameId', component: GameDetailsComponent },
 ];
 
 @NgModule({

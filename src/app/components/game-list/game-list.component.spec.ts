@@ -6,6 +6,7 @@ import { GameModel } from '../../api/models';
 import { GameService } from '../../api/services';
 import { ErrorService } from '../../services/error.service';
 import { MaterialAppModule } from '../../modules/ngmaterial.module';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('GameListComponent', () => {
     let component: GameListComponent;
@@ -24,7 +25,8 @@ describe('GameListComponent', () => {
 
         TestBed.configureTestingModule({
             imports: [
-                MaterialAppModule
+                MaterialAppModule,
+                RouterTestingModule.withRoutes([])
             ],
             providers: [
                 { provide: GameService, useValue: gameService },

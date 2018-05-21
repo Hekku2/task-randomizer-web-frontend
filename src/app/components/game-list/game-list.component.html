@@ -3,7 +3,7 @@
   <mat-card-content>
     <mat-list>
       <mat-list-item *ngFor="let game of games">
-        {{game.name}}
+        <button mat-button routerLink="/games/{{game.id}}">{{game.name}}</button>
       </mat-list-item>
     </mat-list>
   </mat-card-content>
