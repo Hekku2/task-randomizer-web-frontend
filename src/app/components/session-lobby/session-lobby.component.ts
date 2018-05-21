@@ -6,8 +6,7 @@ import { ErrorService } from '../../services/error.service';
 
 @Component({
     selector: 'app-session-lobby',
-    templateUrl: './session-lobby.component.html',
-    styleUrls: ['./session-lobby.component.css']
+    templateUrl: './session-lobby.component.html'
 })
 export class SessionLobbyComponent implements OnInit {
     session = <GameSessionModel>{};

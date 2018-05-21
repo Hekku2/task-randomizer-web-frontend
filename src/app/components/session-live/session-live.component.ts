@@ -12,8 +12,7 @@ import { MessageService } from '../../services/message.service';
 
 @Component({
     selector: 'app-session-live',
-    templateUrl: './session-live.component.html',
-    styleUrls: ['./session-live.component.css']
+    templateUrl: './session-live.component.html'
 })
 export class SessionLiveComponent implements OnInit {
     private sessionId: string;

@@ -6,8 +6,7 @@ import { ErrorService } from '../../services/error.service';
 
 @Component({
     selector: 'app-session-list',
-    templateUrl: './session-list.component.html',
-    styleUrls: ['./session-list.component.css']
+    templateUrl: './session-list.component.html'
 })
 export class SessionListComponent implements OnInit {
     gameSessions: GameSessionListModel[];

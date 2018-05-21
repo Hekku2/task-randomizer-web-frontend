@@ -5,8 +5,7 @@ import { ErrorService } from '../../services/error.service';
 
 @Component({
     selector: 'app-game-list',
-    templateUrl: './game-list.component.html',
-    styleUrls: ['./game-list.component.css']
+    templateUrl: './game-list.component.html'
 })
 export class GameListComponent implements OnInit {
     public games: GameModel[] = [];
