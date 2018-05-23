@@ -1,8 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { GameModel } from '../../api/models';
-import { GameService } from '../../api/services';
+import { GameModel, ErrandModel } from '../../api/models';
+import { GameService, ErrandService } from '../../api/services';
 import { ErrorService } from '../../services/error.service';
+import { MatTableDataSource } from '@angular/material';
 
 @Component({
     selector: 'app-game-list',
@@ -10,10 +11,14 @@ import { ErrorService } from '../../services/error.service';
 })
 export class GameDetailsComponent implements OnInit {
     @Input() public game: GameModel;
+    @Input() public errands: Array<ErrandModel>;
+    public tableSource: MatTableDataSource<ErrandModel>;
+    public displayedColumns = ['description', 'control'];
 
     constructor(
         private route: ActivatedRoute,
         private gameService: GameService,
+        private errandService: ErrandService,
         private error: ErrorService) {}
 
     ngOnInit() {
@@ -26,5 +31,24 @@ export class GameDetailsComponent implements OnInit {
         this.gameService.ApiV1GameByIdGet(gameId).subscribe(result => {
             this.game = result;
         }, this.error.handleError);
+        this.errandService.ApiV1ErrandGameByGameIdGet(gameId).subscribe(result => {
+            this.errands = result;
+            this.tableSource = new MatTableDataSource(result);
+        }, this.error.handleError);
+    }
+
+    public add() {
+        this.errands.push(<ErrandModel>{
+            description: 'New errand'
+        });
+        this.tableSource.data = this.errands;
+    }
+
+    public remove(object) {
+        const index = this.errands.indexOf(object, 0);
+        if (index > -1) {
+            this.errands.splice(index, 1);
+        }
+        this.tableSource.data = this.errands;
     }
 }
