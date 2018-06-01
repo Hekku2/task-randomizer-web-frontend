@@ -1,4 +1,4 @@
-<mat-card >
+<mat-card>
     <mat-card-title>Game details</mat-card-title>
     <mat-card-content>
         <form>
@@ -9,21 +9,21 @@
             <table mat-table [dataSource]="tableSource" *ngIf="tableSource" matSort class="mat-elevation-z8">
                 <ng-container matColumnDef="description">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
-                    <td mat-cell *matCellDef="let element">
+                    <td mat-cell *matCellDef="let element; let row">
                         <mat-form-field>
-                            <input matInput [(ngModel)]="element.description" name="errand">
+                            <input matInput [(ngModel)]="element.description" name="description-{{row.id}}">
                         </mat-form-field>
                     </td>
                 </ng-container>
 
                 <ng-container matColumnDef="control">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                            <button mat-raised-button (click)="add()">+</button>
-                        </th>
-                        <td mat-cell *matCellDef="let element">
-                            <button mat-raised-button (click)="remove(element)">-</button>
-                        </td>
-                    </ng-container>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <button mat-raised-button (click)="add()">+</button>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <button mat-raised-button (click)="remove(element)">-</button>
+                    </td>
+                </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

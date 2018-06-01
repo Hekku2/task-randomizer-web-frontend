@@ -33,7 +33,7 @@ export class GameDetailsComponent implements OnInit {
         }, this.error.handleError);
         this.errandService.ApiV1ErrandGameByGameIdGet(gameId).subscribe(result => {
             this.errands = result;
-            this.tableSource = new MatTableDataSource(result);
+            this.tableSource = new MatTableDataSource<ErrandModel>(result);
         }, this.error.handleError);
     }
 
