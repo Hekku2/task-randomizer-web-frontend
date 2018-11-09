@@ -18,7 +18,7 @@ export class SessionLiveComponent implements OnInit {
     private sessionId: string;
     private playerName: string;
 
-    private players: string[] = [];
+    public players: string[] = [];
 
     errandsRemaining: number;
     errandPopper: string;
